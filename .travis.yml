@@ -1,11 +1,15 @@
 language: python
 python:
+  - 2.6
   - 2.7
-  - 3.2
-  - 3.3
-env: HTTPBIN_URL=http://httpbin.org/
-script: python test_requests_futures.py
-install: pip install -r requirements-python-2.7.txt
-notifications:
-  email:
-    - rwmcfa1@neces.com
+env:
+  - TWISTED=9.0.0  HTTPBIN_URL=http://httpbin.org/
+  - TWISTED=10.2.0 HTTPBIN_URL=http://httpbin.org/
+  - TWISTED=11.1.0 HTTPBIN_URL=http://httpbin.org/
+  - TWISTED=12.2.0 HTTPBIN_URL=http://httpbin.org/
+  - TWISTED=13.0.0 HTTPBIN_URL=http://httpbin.org/
+  - TWISTED=latest HTTPBIN_URL=http://httpbin.org/
+install:
+  - "[ $TWISTED = latest ] || pip install Twisted==$TWISTED"
+  - pip install .
+script: trial test_txrequests.py

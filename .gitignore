@@ -1,3 +1,5 @@
+_trial_temp/
+sandbox/
 build/
 dist/
 *.egg-info/
