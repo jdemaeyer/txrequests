@@ -63,8 +63,7 @@ class Session(requestsSession):
                 reactor.callFromThread(d.callback, res)
             except Exception as e:
                 reactor.callFromThread(d.errback, e)
-            return res
-
+ 
         d = defer.Deferred()
         self.pool.callInThread(func)
         return d
