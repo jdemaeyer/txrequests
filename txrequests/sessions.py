@@ -24,6 +24,7 @@ from twisted.internet import defer, reactor
 from requests import Session as requestsSession
 from twisted.python.threadpool import ThreadPool
 
+
 class Session(requestsSession):
 
     def __init__(self, pool=None,  minthreads=1, maxthreads=4, **kwargs):
@@ -36,14 +37,18 @@ class Session(requestsSession):
           ignored and provided threadpool is used as is.
         """
         requestsSession.__init__(self, **kwargs)
+        self.ownPool = False
         if pool is None:
+            self.ownPool = True
             pool = ThreadPool(minthreads=minthreads, maxthreads=maxthreads)
         self.pool = pool
-        pool.start()
+        if self.ownPool:
+            pool.start()
 
     def close(self):
         requestsSession.close(self)
-        self.pool.stop()
+        if self.ownPool:
+            self.pool.stop()
 
     def request(self, *args, **kwargs):
         """Maintains the existing api for Session.request.
@@ -63,7 +68,7 @@ class Session(requestsSession):
                 reactor.callFromThread(d.callback, res)
             except Exception as e:
                 reactor.callFromThread(d.errback, e)
- 
+
         d = defer.Deferred()
         self.pool.callInThread(func)
         return d
