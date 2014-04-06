@@ -41,6 +41,9 @@ class Session(requestsSession):
         if pool is None:
             self.ownPool = True
             pool = ThreadPool(minthreads=minthreads, maxthreads=maxthreads)
+            # unclosed ThreadPool leads to reactor hangs at shutdown
+            # this is a problem in many situation, so better enforce pool stop here
+            reactor.addSystemEventTrigger("before", "shutdown", lambda:pool.stop())
         self.pool = pool
         if self.ownPool:
             pool.start()

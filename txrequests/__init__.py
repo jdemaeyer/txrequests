@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Requests Futures
+# txrequests
 
 """
 async requests HTTP library
@@ -9,8 +9,8 @@ async requests HTTP library
 
 """
 
-__title__ = 'requests-futures'
-__version__ = '0.9.1'
+__title__ = 'txrequests'
+__version__ = '0.9.2'
 __build__ = 0x000000
 __author__ = 'Pierre Tardy'
 __license__ = 'Apache 2.0'
